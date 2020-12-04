@@ -1,0 +1,41 @@
+#!/bin/sh -e
+
+patch -p2 < xsnow-comp.patch
+
+(
+    cd xorg-cf-files
+
+    ./configure \
+        --prefix="$PWD/../junk"
+ 
+    make
+    make install
+)
+
+(
+    cd imake
+
+    ./configure \
+        --prefix="$PWD/../junk"
+ 
+    make
+    make install
+)
+
+(
+    cd gccmakedep
+
+    ./configure \
+        --prefix="$PWD/../junk"
+ 
+    make
+    make install
+)
+export PATH="$PWD/junk/bin:$PATH"
+
+xmkmf -a
+make depend
+make
+
+install -Dm755 xsnow $1/usr/bin/xsnow
+install -Dm644 xsnow.1 $1/usr/share/man/man1/xsnow.1

@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+sed -i '/xgettext/d' cxpm/Makefile.am
+sed -i '/xgettext/d' cxpm/Makefile.in
+sed -i '/xgettext/d' sxpm/Makefile.am
+sed -i '/xgettext/d' sxpm/Makefile.in
+
+./configure \
+	--prefix=/usr
+
+make
+make DESTDIR="$1" install
